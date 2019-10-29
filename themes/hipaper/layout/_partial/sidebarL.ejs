@@ -1,0 +1,11 @@
+<aside id="sidebarL">
+  <% if (is_category()){ %>
+    <%- partial('_widget/category') %>
+  <% } %>
+  <% if (is_tag()){ %>
+    <%- partial('_widget/tag') %>
+  <% } %>
+  <% if (is_archive()){ %>
+    <%- partial('_widget/archive') %>
+  <% } %>
+</aside>

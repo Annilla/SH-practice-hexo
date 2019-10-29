@@ -1,0 +1,89 @@
+<aside id="sidebarL">
+  <div class="toc-article toc-article-category">
+    <% if(page.categories.length == 1){ %>
+      <!-- 如果只有一個分類直接印出來 -->
+      <% page.categories.map(function(category){  %>
+        <span class="toc-title"><%= category.name %></span>
+        <ul class="nav">
+          <% category.posts.sort('date').map(function(post, i){  %>
+            <li <% if (post.title === page.title){ %> class="active" <% } %>>
+              <a href="<%- url_for(post.path) %>">
+                <%- post.title %>
+              </a>
+            </li>
+          <% }) %>
+        </ul>
+      <% }) %>
+    <% } else { %>
+      <!-- 兩個分類以上，就只印大分類往下一層子分類 -->
+
+      <% var catArray = []; %>
+      <% var catHasPrint = []; %>
+      <% var catname; %>
+      <% page.categories.each(function(category, index){  %>
+        <% if(index == 0){ %>
+          <% catname = category.name; %>
+        <% } %>
+      <% }) %>
+
+      <!-- 取得底下的子分類  -->
+      <% site.categories.map(function(category){  %>
+        <% if ( category.name == catname){ %>
+          <% category.posts.sort('date').map(function(post, i){  %>
+            <% post.categories.map(function(cat, i){ %>
+              <% if ( i != 0 & cat.name!=catname & catArray.indexOf(cat.name) < 0) { %>
+                <% catArray.push(cat.name); %>
+              <% } %>
+            <% }) %>
+          <% }) %>
+          <!-- 子分類照順序排列 -->
+          <% catArray.sort() %>
+        <% } %>
+      <% }) %>
+
+
+      <span class="toc-title"><%= catname %></span>
+      <ul class="nav">
+        <% catArray.map(function(item){  %>
+          <% site.categories.map(function(category){  %>
+            <% if ( category.name == item){ %>
+              <% if ( catHasPrint.indexOf(item) < 0 ){ %>
+                <span class="toc-title"><%= category.name %></span>
+              <% } %>
+              <% catHasPrint.push(item); %>
+              <ul class="nav">
+                <% category.posts.sort('date').map(function(post, i){  %>
+                  <% post.categories.map(function(cat, i){  %>
+                    <% if ( cat.name == catname){ %>
+                      <li <% if (post.title === page.title){ %> class="active" <% } %>>
+                        <a href="<%- url_for(post.path) %>">
+                          <%- post.title %>
+                        </a>
+                      </li>
+                    <% } %>
+                  <% }) %>
+                <% }) %>
+              </ul>
+            <% } %>
+          <% }) %>
+        <% }) %>
+      </ul>
+    <% }%>
+  </div>
+</aside>
+
+<section id="main"">
+  <%- partial('article', {post: page, index: false}) %>
+</section>
+
+<!-- Table of Contents -->
+<aside id="sidebar">
+  <div id="toc" class="toc-article">
+  <span class="toc-title"><%= __('contents') %></span>
+  <% if (toc(post.content) != ""){ %>
+    <%- toc(post.content, { "class": "nav" }) %>
+  <% } else { %>
+    <ol class="nav"><%= __('none') %></ol>
+  <% } %>
+  </div>
+</aside>

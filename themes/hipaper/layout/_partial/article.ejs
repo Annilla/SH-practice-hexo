@@ -1,0 +1,61 @@
+<article id="<%= post.layout %>-<%= post.slug %>" class="article article-type-<%= post.layout %>" itemscope itemprop="blogPost" >
+  <div id="articleInner" class="clearfix post-1016 post type-post status-publish format-standard has-post-thumbnail hentry category-template-2 category-uncategorized tag-codex tag-edge-case tag-featured-image tag-image tag-template">
+    <%- partial('post/gallery') %>
+    <div class="article-meta">
+      <%- partial('post/date', {class_name: 'article-date', date_format: null}) %>
+      <%- partial('post/category') %> 
+      <%- partial('post/busuanzi-analytics',{index: index}) %>
+    </div>
+    <% if (post.link || post.title){ %>
+      <header class="article-header">
+        <%- partial('post/title', {class_name: 'article-title'}) %>
+      </header>
+    <% } %>
+    <div class="article-entry" itemprop="articleBody">
+        <% if (post.thumbnail != ""){ %>
+          <div class="entry-thumbnail">
+            <% if (index){ %>
+            <a href="<%- url_for(post.path) %>">
+              <img src="<%- url_for(post.thumbnail) %>" class="attachment-thumb-featured size-thumb-featured wp-post-image" alt="">
+            </a>
+            <% } else { %>
+              <img src="<%- url_for(post.thumbnail) %>" class="attachment-thumb-featured size-thumb-featured wp-post-image" alt="">
+            <% } %>
+          </div>
+          <div class="entry-summary">
+          <%- strip_html(post.excerpt) %>
+
+        <% } else { %>
+
+          <% if (theme.random_thumb){ %>
+            <div class="entry-thumbnail">
+              <a href="<%- url_for(post.path) %>"><img src="http://lorempixel.com/750/450/city/<%- Math.ceil(Math.random() * 10) %>" class="attachment-thumb-featured size-thumb-featured wp-post-image" alt=""></a>
+            </div>
+          <% } %>
+          <div class="entry-summary">
+          <%- strip_html(post.excerpt) %>
+
+        <% } %>
+
+      <% if (post.excerpt && index){ %>
+          <p class="article-more-link">
+            <a href="<%- url_for(post.path) %>#more"><%= __('read_more') %></a>
+          </p>
+        </div>
+      <% } else { %>
+        <%- post.more %>
+      <% } %>
+    </div>
+    <footer class="entry-meta entry-footer">
+      <!-- <%- partial('post/category') %> -->
+      <%- partial('post/tag') %>
+      <% if (!index && post.comments && (theme.duoshuo_shortname || theme.disqus_shortname || theme.uyan_uid || theme.wumii || theme.livere_shortname)){ %>
+        <%- partial('comment') %>
+      <% } %>
+    </footer>
+    <hr class="entry-footer-hr">
+  </div>
+  <% if (!index){ %>
+    <%- partial('post/nav') %>
+  <% } %>
+</article>

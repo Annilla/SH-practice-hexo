@@ -1,0 +1,7 @@
+# escape=`
+
+FROM mcr.microsoft.com/windows/servercore/iis:windowsservercore-1803
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+RUN Remove-Item -Recurse C:\inetpub\wwwroot\*
+WORKDIR /inetpub/wwwroot/compliancedoc
+COPY /Publish/ .

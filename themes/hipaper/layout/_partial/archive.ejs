@@ -1,0 +1,96 @@
+<% if (pagination == 2){ %>
+  <% page.posts.each(function(post){ %>
+    <%- partial('article', {post: post, index: true}) %>
+  <% }) %>
+<% } else { %>
+  <% if (is_archive()){ %>
+    <div class="archives-tags-wrap"><blockquote><span><%= __('post_total_count', site.posts.length) %></span></blockquote>
+  <% } %>
+
+
+  <% var catArray = []; %>
+  <% var catHasPrint = []; %>
+
+  <% if (is_category()){ %>
+    <!-- 取得底下的子分類  -->
+    <% site.categories.map(function(category){  %>
+      <% if ( category.name == catname){ %>
+        <% category.posts.sort('date').map(function(post, i){  %>
+          <% post.categories.map(function(cat, i){ %>
+            <% if ( i != 0 & cat.name!=catname & catArray.indexOf(cat.name) < 0) { %>
+              <% catArray.push(cat.name); %>
+            <% } %>
+          <% }) %>
+        <% }) %>
+        <!-- 子分類照順序排列 -->
+        <% catArray.sort() %>
+      <% } %>
+    <% }) %>
+
+    <!-- 如果有子分類就照分類出文章 -->
+    <% if ( catArray.length ){ %>
+      <% catArray.map(function(item){  %>
+        <% site.categories.map(function(category){  %>
+          <% if ( category.name == item){ %>
+            <div class="archives-wrap">
+              <% if ( catHasPrint.indexOf(item) < 0 ){ %>
+                <div class="archive-year-wrap" id="<%= category.name %>">
+                  <h1 class="archive-category"><%= category.name %></h1>
+                </div>
+              <% } %>
+              <% catHasPrint.push(item); %>
+              <div class="archives">
+                <% category.posts.sort('date').map(function(post, i){  %>
+                  <% post.categories.map(function(cat, i){  %>
+                    <% if ( cat.name == catname){ %>
+                        <%- partial('_partial/archive-post', {post: post, index: true}) %>
+                    <% } %>
+                  <% }) %>
+                <% }) %>
+              </div>
+            </div>
+          <% } %>
+        <% }) %>
+      <% }) %>
+    <% } %>
+  <% } %>
+
+
+  <!-- 如果沒有子分類 -->
+  <% if (!catArray.length){ %>
+    <% var last; %>
+    <% page.posts.sort('date').each(function(post, i){ %>
+      <% var year = post.date.year(); %>
+      <% if (last != year){ %>
+        <% if (last != null){ %>
+          </div></section>
+        <% } %>
+        <% last = year; %>
+        <section class="archives-wrap">
+
+          <% if (!is_category() & !is_tag()){ %>
+            <div class="archive-year-wrap">
+              <h1><a href="<%- url_for(config.archive_dir + '/' + year) %>" class="archive-year"><%= year %></a></h1>
+            </div>
+          <% } %>
+          
+          <div class="archives">
+      <% } %>    
+      <%- partial('archive-post', {post: post, even: i % 2 == 0}) %>
+    <% }) %>
+    <% if (page.posts.length){ %>
+      </div></section>
+    <% } %>
+  <% } %>
+<% } %>
+
+
+<% if (page.total > 1 & !is_category() & !is_tag()){ %>
+  <nav id="page-nav">
+    <% var prev_text = __('prev');var next_text = __('next')%>
+    <%- paginator({
+      prev_text: prev_text,
+      next_text: next_text
+    }) %>
+  </nav>
+<% } %>

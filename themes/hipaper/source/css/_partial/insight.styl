@@ -1,0 +1,143 @@
+// Insight Search Styles
+ins-container-width = 540px
+ins-text-grey = #9a9a9a
+ins-border-grey = #e2e2e2
+ins-background-grey = #f7f7f7
+ins-background-blue = color-black
+
+$ins-full-screen
+    top: 0
+    left: 0
+    margin: 0
+    width: 100%
+    height: 100%
+
+.ins-search
+    display: none
+    &.show
+        display: block
+
+.ins-selectable
+    cursor: pointer
+
+.ins-search-mask,
+.ins-search-container
+    position: fixed
+
+.ins-search-mask
+    top: 0
+    left: 0
+    width: 100%
+    height: 100%
+    z-index: 100
+    background: rgba(0,0,0,0.5)
+
+.ins-input-wrapper
+    position: relative
+
+.ins-search-input
+    width: 100%
+    height: 100%
+    border: none
+    outline: none
+    font-size: 16px
+    box-shadow: none
+    font-weight: 200
+    border-radius: 0
+    background: white
+    line-height: 20px
+    box-sizing: border-box
+    padding: 12px 28px 12px 20px
+    border-bottom: 1px solid ins-border-grey
+    font-family: "Microsoft JhengHei", Helvetica, Arial, sans-serif
+
+.ins-close
+    top: 50%
+    right: 6px
+    width: 20px
+    height: 20px
+    font-size: 16px
+    margin-top: -11px
+    position: absolute
+    text-align: center
+    display: inline-block
+    &:hover
+        color: ins-background-blue
+
+.ins-search-container
+    left: 50%
+    top: 100px
+    z-index: 101
+    bottom: 100px
+    box-sizing: border-box
+    width: ins-container-width
+    margin-left: -(ins-container-width/2)
+    border-top: 2px solid color-theme
+    @media screen and (max-width: 559px), screen and (max-height: 479px)
+        top: 0
+        left: 0
+        margin: 0
+        width: 100%
+        height: 100%
+        background: ins-background-grey
+
+.ins-section-wrapper
+    left: 0
+    right: 0
+    top: 45px
+    bottom: 0
+    overflow-y: auto
+    position: absolute
+
+.ins-section-container
+    position: relative
+    background: white
+    .ins-section:nth-child(2)
+        display: none
+
+.ins-section
+    font-size: 14px
+    line-height: 16px
+    .ins-section-header
+        padding: 8px 15px
+        color: white
+        font-family: Oswald, "Microsoft JhengHei", Arial, Helvetica, sans-serif
+        font-weight: 500
+        font-size: 14px
+        letter-spacing: 1px
+        text-transform: uppercase
+        border-bottom: 1px solid ins-border-grey
+        background-color: black
+    .ins-slug
+        margin-left: 5px
+        color: ins-text-grey
+        &:before
+            content: '('
+        &:after
+            content: ')'
+    .ins-search-item
+        padding: 15px 15px
+        header,
+        .ins-search-preview
+            font-family: "Microsoft JhengHei", Arial, Helvetica, sans-serif
+            overflow: hidden
+            white-space: nowrap
+            text-overflow: ellipsis
+        header
+            font-size: 16px
+            line-height: 20px
+            font-weight: bold
+            .fa
+                margin-right: 8px
+        .ins-search-preview
+            height: 15px
+            font-size: 12px
+            line-height: 16px
+            color: ins-text-grey
+            margin: 10px 0 10px 26px
+        &:hover,
+        &.active
+            background: #eee
+            color: #bc0202
+            .ins-search-preview
+                color: #bc0202

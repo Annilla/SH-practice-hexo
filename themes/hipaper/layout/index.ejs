@@ -1,0 +1,38 @@
+<% if (site.categories.length){ %>
+<section class="home-section">
+  <div class="home-section-title">Categories</div>
+  <%- list_categories({show_count: theme.show_count}) %>
+</section>
+<% } %>
+
+<section class="home-section">
+  <div class="home-section-title">Recent Posts</div>
+  <% page.posts.each(function(post){ %>
+    <ul class="home-section-posts">
+      <li>
+        <a href="<%- url_for(post.path) %>" class="home-section-posts-img" style="background-image: url('<%- url_for(post.thumbnail) %>')"></a>
+        <div class="home-section-posts-content">
+          <div class="home-section-posts-meta">
+              <%- partial('_partial/post/date', {post: post, class_name: 'article-date', date_format: null}) %>
+              <%- partial('_partial/post/category', {post: post}) %>
+          </div>
+          <a href="<%- url_for(post.path) %>" class="home-section-posts-content-title"><%- post.title %></a>
+          <div class="home-section-posts-content-desc"><%- strip_html(post.excerpt) %></div>
+          <div class="home-section-posts-content-bottom">
+            <div class="home-section-posts-content-tag"><%- partial('_partial/post/tag', {post: post}) %></div>
+            <a href="<%- url_for(post.path) %>" class="home-section-posts-content-btn">Read More</a>
+            </div>
+        </div>
+      </li>
+    </ul>
+  <% }) %>
+  <% if (page.total > 1){ %>
+    <nav id="page-nav">
+      <% var prev_text = __('prev');var next_text = __('next')%>
+      <%- paginator({
+        prev_text: prev_text,
+        next_text: next_text
+      }) %>
+    </nav>
+  <% } %>
+</section>
